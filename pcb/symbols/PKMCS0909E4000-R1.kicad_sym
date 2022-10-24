@@ -1,0 +1,121 @@
+(kicad_symbol_lib (version 20201005) (generator kicad_symbol_editor)
+  (symbol "PKMCS0909E4000-R1:PKMCS0909E4000-R1" (pin_numbers hide) (pin_names (offset 1.016) hide) (in_bom yes) (on_board yes)
+    (property "Reference" "LS" (id 0) (at -3.81 8.9154 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Value" "PKMCS0909E4000-R1" (id 1) (at -3.8354 -11.4808 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Footprint" "PKMCS0909E4000-R1:SPKR_PKMCS0909E4000-R1" (id 2) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom) hide)
+    )
+    (property "Datasheet" "https://www.murata.com/~/media/webrenewal/products/sound/sounder/vppt-buzj083-d.ashx" (id 3) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom) hide)
+    )
+    (property "MAXIMUM_PACKAGE_HEIGHT" "1.9 mm" (id 4) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom) hide)
+    )
+    (property "STANDARD" "Manufacturer Recommendations" (id 5) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom) hide)
+    )
+    (property "PARTREV" "May 22, 2020" (id 6) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom) hide)
+    )
+    (property "MANUFACTURER" "Murata Electronics" (id 7) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom) hide)
+    )
+    (symbol "PKMCS0909E4000-R1_0_0"
+      (text "+" (at -1.905 1.27 0)
+        (effects (font (size 1.778 1.778)) (justify left bottom))
+      )
+      (text "-" (at -1.905 -1.27 0)
+        (effects (font (size 1.778 1.778)) (justify left top))
+      )
+      (polyline
+        (pts
+          (xy -0.635 -1.27)
+          (xy -0.635 1.27)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy -0.635 1.27)
+          (xy 0 1.27)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 -1.27)
+          (xy -0.635 -1.27)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 -1.27)
+          (xy 0 -2.54)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 1.27)
+          (xy 0 2.54)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0 1.27)
+          (xy 0.635 1.27)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.635 -1.27)
+          (xy 0 -1.27)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.635 1.27)
+          (xy 0.635 -1.27)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 0.635 1.27)
+          (xy 1.905 3.175)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 1.905 -3.175)
+          (xy 0.635 -1.27)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (polyline
+        (pts
+          (xy 1.905 3.175)
+          (xy 1.905 -3.175)
+        )
+        (stroke (width 0.254)) (fill (type none))
+      )
+      (pin passive line (at 0 5.08 270) (length 2.54)
+        (name "~" (effects (font (size 1.016 1.016))))
+        (number "1" (effects (font (size 1.016 1.016))))
+      )
+      (pin passive line (at 0 -5.08 90) (length 2.54)
+        (name "~" (effects (font (size 1.016 1.016))))
+        (number "2" (effects (font (size 1.016 1.016))))
+      )
+    )
+  )
+)

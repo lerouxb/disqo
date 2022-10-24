@@ -1,0 +1,9 @@
+(sym_lib_table
+  (lib (name "Espressif")(type "KiCad")(uri "${KIPRJMOD}/symbols/Espressif.kicad_sym")(options "")(descr ""))
+  (lib (name "USB4105")(type "KiCad")(uri "${KIPRJMOD}/symbols/USB4105.kicad_sym")(options "")(descr ""))
+  (lib (name "AS5600")(type "KiCad")(uri "${KIPRJMOD}/symbols/AS5600.kicad_sym")(options "")(descr ""))
+  (lib (name "AP7354-33W5-7")(type "KiCad")(uri "${KIPRJMOD}/symbols/AP7354-33W5-7.kicad_sym")(options "")(descr ""))
+  (lib (name "GC9A01")(type "KiCad")(uri "${KIPRJMOD}/symbols/GC9A01.kicad_sym")(options "")(descr ""))
+  (lib (name "2450AT42E0100E")(type "KiCad")(uri "${KIPRJMOD}/symbols/2450AT42E0100E.kicad_sym")(options "")(descr ""))
+  (lib (name "PKMCS0909E4000-R1")(type "KiCad")(uri "${KIPRJMOD}/symbols/PKMCS0909E4000-R1.kicad_sym")(options "")(descr ""))
+)
