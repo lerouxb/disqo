@@ -4240,7 +4240,7 @@
   )
 
   (symbol (lib_id "Connector_Generic:Conn_01x02") (at 153.67 168.91 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid 0886d2b5-f579-47bc-b49c-df31d9682382)
     (property "Reference" "J2" (id 0) (at 155.702 169.3453 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -4292,7 +4292,9 @@
     (in_bom yes) (on_board yes)
     (uuid 0a3edfe9-2902-4933-b4a5-14540d9da3e5)
     (property "Reference" "SW3" (id 0) (at 234.442 19.304 0))
-    (property "Value" "B1" (id 1) (at 241.3 19.304 0))
+    (property "Value" "side-switch" (id 1) (at 241.3 19.304 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (property "Footprint" "EVP-AKE31A:EVP-AKE31A" (id 2) (at 238.252 17.526 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -4550,7 +4552,7 @@
   )
 
   (symbol (lib_id "Connector:TestPoint_Small") (at 161.29 134.62 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid 2872643c-6c4c-4288-ad41-7828758c883f)
     (property "Reference" "TP3" (id 0) (at 162.433 135.0538 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -4953,7 +4955,7 @@
   )
 
   (symbol (lib_id "Connector:TestPoint_Small") (at 172.085 130.81 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid 4a4a324d-198d-48c7-b393-db51d9c00436)
     (property "Reference" "TP7" (id 0) (at 173.228 131.2438 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -4993,7 +4995,9 @@
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 4caf1c03-a213-489a-a665-c3f72b156de1)
     (property "Reference" "SW1" (id 0) (at 101.6 97.2652 0))
-    (property "Value" "EN" (id 1) (at 101.6 99.8021 0))
+    (property "Value" "top-switch" (id 1) (at 101.6 99.8021 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (property "Footprint" "KXT-311:KXT 311 LHS" (id 2) (at 101.6 97.536 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5210,7 +5214,7 @@
   )
 
   (symbol (lib_id "Connector:TestPoint_Small") (at 161.29 127.635 0) (unit 1)
-    (in_bom yes) (on_board yes)
+    (in_bom no) (on_board yes)
     (uuid 605d1e4c-ed16-48c0-96f4-c6c1064ba638)
     (property "Reference" "TP1" (id 0) (at 163.195 127.635 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -5410,7 +5414,9 @@
     (in_bom yes) (on_board yes)
     (uuid 7f16eaf8-22a9-4dff-bdb6-4e50367c62c8)
     (property "Reference" "SW4" (id 0) (at 234.442 25.654 0))
-    (property "Value" "B2" (id 1) (at 241.046 25.654 0))
+    (property "Value" "side-switch" (id 1) (at 241.046 25.654 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (property "Footprint" "EVP-AKE31A:EVP-AKE31A" (id 2) (at 238.252 23.368 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5440,7 +5446,7 @@
   (symbol (lib_id "power:VBUS") (at 31.75 85.09 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 8224526b-d78f-4265-a7f5-e3434adac055)
-    (property "Reference" "#PWR?" (id 0) (at 31.75 88.9 0)
+    (property "Reference" "#PWR0139" (id 0) (at 31.75 88.9 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VBUS" (id 1) (at 31.75 80.645 0))
@@ -5454,7 +5460,7 @@
   )
 
   (symbol (lib_id "GC9A01:GC9A01") (at 87.63 165.1 0) (unit 1)
-    (in_bom yes) (on_board yes)
+    (in_bom no) (on_board yes)
     (uuid 82de7683-341b-4631-902d-e9239730d01d)
     (property "Reference" "U5" (id 0) (at 95.885 176.53 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -5517,7 +5523,7 @@
   )
 
   (symbol (lib_id "Connector:TestPoint_Small") (at 172.085 128.27 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid 863c9e12-e0aa-4110-a7c8-3709e0834604)
     (property "Reference" "TP6" (id 0) (at 173.228 128.7038 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -5557,7 +5563,9 @@
     (in_bom yes) (on_board yes)
     (uuid 889b488c-2359-4a83-98bf-6a06fea33d04)
     (property "Reference" "SW5" (id 0) (at 234.442 31.496 0))
-    (property "Value" "B3" (id 1) (at 240.792 31.496 0))
+    (property "Value" "side-switch" (id 1) (at 240.792 31.496 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (property "Footprint" "EVP-AKE31A:EVP-AKE31A" (id 2) (at 238.252 29.21 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5572,7 +5580,7 @@
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 89f9e7f0-aa05-41d9-8f7f-b92210c01f4b)
     (property "Reference" "L1" (id 0) (at 190.5 57.5142 90))
-    (property "Value" "TBD" (id 1) (at 190.5 60.0511 90))
+    (property "Value" "0R" (id 1) (at 190.5 60.0511 90))
     (property "Footprint" "Inductor_SMD:L_0603_1608Metric" (id 2) (at 190.5 61.595 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5641,7 +5649,9 @@
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 8f836322-d7a3-463b-81c5-d0068e20d5dc)
     (property "Reference" "SW2" (id 0) (at 102.362 115.5532 0))
-    (property "Value" "BOOT" (id 1) (at 102.362 118.0901 0))
+    (property "Value" "top-switch" (id 1) (at 102.362 118.0901 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (property "Footprint" "KXT-311:KXT 311 LHS" (id 2) (at 102.362 115.824 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -6183,7 +6193,7 @@
   )
 
   (symbol (lib_id "Connector:TestPoint_Small") (at 161.29 137.795 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid db1eb576-45fc-417e-b559-baa74a269dae)
     (property "Reference" "TP4" (id 0) (at 162.433 138.2288 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -6530,7 +6540,7 @@
   )
 
   (symbol (lib_id "Connector:TestPoint_Small") (at 161.29 130.175 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid fd511ea2-0f7d-419f-8f8c-86f09d6c7329)
     (property "Reference" "TP2" (id 0) (at 162.433 130.6088 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -6706,6 +6716,9 @@
     (path "/1a644786-e4cb-4e36-9c77-15eecae6a63e"
       (reference "#PWR0138") (unit 1) (value "GND") (footprint "")
     )
+    (path "/8224526b-d78f-4265-a7f5-e3434adac055"
+      (reference "#PWR0139") (unit 1) (value "VBUS") (footprint "")
+    )
     (path "/4d6b70e3-fa0d-47e4-a942-7ec320c14233"
       (reference "#PWR0140") (unit 1) (value "GND") (footprint "")
     )
@@ -6738,9 +6751,6 @@
     )
     (path "/0b9d6d7b-8e80-453c-811b-5474dba4b67e"
       (reference "#PWR0151") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/8224526b-d78f-4265-a7f5-e3434adac055"
-      (reference "#PWR?") (unit 1) (value "VBUS") (footprint "")
     )
     (path "/9cbbb4db-a10d-4ce5-adc8-74463e8887e4"
       (reference "BZ1") (unit 1) (value "Buzzer") (footprint "PKMCS0909E4000-R1:SPKR_PKMCS0909E4000-R1")
@@ -6824,7 +6834,7 @@
       (reference "J2") (unit 1) (value "Conn_01x02") (footprint "battery-connector:Battery Connector")
     )
     (path "/89f9e7f0-aa05-41d9-8f7f-b92210c01f4b"
-      (reference "L1") (unit 1) (value "TBD") (footprint "Inductor_SMD:L_0603_1608Metric")
+      (reference "L1") (unit 1) (value "0R") (footprint "Inductor_SMD:L_0603_1608Metric")
     )
     (path "/8f7628ac-f1c4-4d32-81c6-3f1700c771b5"
       (reference "Q1") (unit 1) (value "DMN2004VK-7") (footprint "Package_TO_SOT_SMD:SOT-563")
@@ -6926,19 +6936,19 @@
       (reference "R27") (unit 1) (value "10k") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/4caf1c03-a213-489a-a665-c3f72b156de1"
-      (reference "SW1") (unit 1) (value "EN") (footprint "KXT-311:KXT 311 LHS")
+      (reference "SW1") (unit 1) (value "top-switch") (footprint "KXT-311:KXT 311 LHS")
     )
     (path "/8f836322-d7a3-463b-81c5-d0068e20d5dc"
-      (reference "SW2") (unit 1) (value "BOOT") (footprint "KXT-311:KXT 311 LHS")
+      (reference "SW2") (unit 1) (value "top-switch") (footprint "KXT-311:KXT 311 LHS")
     )
     (path "/0a3edfe9-2902-4933-b4a5-14540d9da3e5"
-      (reference "SW3") (unit 1) (value "B1") (footprint "EVP-AKE31A:EVP-AKE31A")
+      (reference "SW3") (unit 1) (value "side-switch") (footprint "EVP-AKE31A:EVP-AKE31A")
     )
     (path "/7f16eaf8-22a9-4dff-bdb6-4e50367c62c8"
-      (reference "SW4") (unit 1) (value "B2") (footprint "EVP-AKE31A:EVP-AKE31A")
+      (reference "SW4") (unit 1) (value "side-switch") (footprint "EVP-AKE31A:EVP-AKE31A")
     )
     (path "/889b488c-2359-4a83-98bf-6a06fea33d04"
-      (reference "SW5") (unit 1) (value "B3") (footprint "EVP-AKE31A:EVP-AKE31A")
+      (reference "SW5") (unit 1) (value "side-switch") (footprint "EVP-AKE31A:EVP-AKE31A")
     )
     (path "/605d1e4c-ed16-48c0-96f4-c6c1064ba638"
       (reference "TP1") (unit 1) (value "DAC1") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
