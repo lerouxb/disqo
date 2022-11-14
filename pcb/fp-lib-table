@@ -1,7 +1,6 @@
 (fp_lib_table
   (lib (name "gc9a01")(type "KiCad")(uri "${KIPRJMOD}/footprints/gc9a01.pretty")(options "")(descr ""))
   (lib (name "USB4105")(type "KiCad")(uri "${KIPRJMOD}/footprints/USB4105.pretty")(options "")(descr ""))
-  (lib (name "EVQ-P7L01P")(type "KiCad")(uri "${KIPRJMOD}/EVQ-P7L01P")(options "")(descr ""))
   (lib (name "Espressif")(type "KiCad")(uri "${KIPRJMOD}/footprints/Espressif.pretty")(options "")(descr ""))
   (lib (name "KXT-311")(type "KiCad")(uri "${KIPRJMOD}/footprints/KXT-311.pretty")(options "")(descr ""))
   (lib (name "sot-25")(type "KiCad")(uri "${KIPRJMOD}/footprints/sot-25.pretty")(options "")(descr ""))

@@ -10,4 +10,4 @@ kikit panelize \
     --fiducials '3fid; hoffset: 5mm; voffset: 2.5mm; coppersize: 2mm; opening: 1mm;' \
     --text 'simple; text: JLCJLCJLCJLC; anchor: mt; voffset: 2.5mm; hjustify: center; vjustify: center;' \
     --post 'millradius: 1mm;' \
-    wristpad.kicad_pcb panel.kicad_pcb
+    disqo.kicad_pcb panel.kicad_pcb

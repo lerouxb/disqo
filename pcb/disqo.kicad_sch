@@ -5086,7 +5086,7 @@
   )
 
   (symbol (lib_id "Device:C_Small") (at 184.15 64.135 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid 51103f9d-f7ed-4cbf-9eda-3eca81c6ce12)
     (property "Reference" "C18" (id 0) (at 186.4741 63.3066 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -6099,7 +6099,7 @@
   )
 
   (symbol (lib_id "Device:C_Small") (at 196.215 64.135 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid d10891e6-149f-42dc-bd53-614680554bdc)
     (property "Reference" "C19" (id 0) (at 198.5391 63.3066 0)
       (effects (font (size 1.27 1.27)) (justify left))
