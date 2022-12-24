@@ -1,1 +1,5 @@
 *.zip
+pcb/#auto_saved_files#
+pcb/disqo-stencil*
+read_angle.py
+

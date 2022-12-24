@@ -1,4 +1,4 @@
-20452661694344408
+20452673966343322
 2450AT42E0100
 XDCR_2450AT42E0100E
 
@@ -52128,13 +52128,6 @@ EVP-AKE31A
 0
 3
 2
-EVQ-P7L01P
-SW_EVQ-P7L01P
-
-
-0
-4
-2
 Espressif
 ESP32-C3-MINI-1
 ESP32-C3-MINI-1: https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf
@@ -86302,3 +86295,10 @@ SOT TO_SOT_SMD
 0
 5
 5
+testpoint
+TestPoint_Pad_D1.0mm
+SMD pad as test Point, diameter 1.0mm
+test point SMD pad
+0
+1
+1
