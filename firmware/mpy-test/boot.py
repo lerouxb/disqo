@@ -3,4 +3,5 @@
 #esp.osdebug(None)
 #import webrepl
 #webrepl.start()
-from hal import *
+from mainmenu import run
+run()
