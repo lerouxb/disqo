@@ -1,0 +1,3 @@
+[submodule "firmware/c-test/components/gc9a01"]
+	path = firmware/c-test/components/gc9a01
+	url = https://github.com/liyanboy74/gc9a01-esp-idf.git

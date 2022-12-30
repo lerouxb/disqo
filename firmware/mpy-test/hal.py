@@ -95,29 +95,47 @@ HALF_SMALL_FONT_HEIGHT = 8
 MIN_TEXT_Y_POS = -7
 MAX_TEXT_Y_POS = 7
 
-rmt = esp32.RMT(0, pin=Pin(PINS['PIEZO']), clock_div=8, idle_level=1, tx_carrier=(10000000, 50, 1))
+# we need half a wave-form of low time for square waves. largest count allowed is 32767
+# let's say the lowest frequency we want to support is 50hz
+# 80000000 / (32767*2*50) = 24.414807580797753
+# 80000000 / 25 = 3200000
+rmt = esp32.RMT(0, pin=Pin(PINS['PIEZO']), clock_div=25, idle_level=1)
 bench("rmt")
 
 def square_wave(freq, volume=1):
-    units = 4000000 / freq
+    freq = max(freq, 50)
+    units = round(3200000 / freq)
     half = units / 2
     if volume == 1:
         pulses = (round(half), round(half))
     else:  
         ontime = half * volume
         offtime = half - ontime
-        oncount = round(ontime / 3)
-        offcount = round(offtime / 2)
-        pulses = (oncount, offcount, oncount, offcount, oncount, round(half))
+        oncount = max(round(ontime / 32), 1)
+        offcount = max(round(offtime / 31), 1)
+
+        total = 0
+
+        pulses = []
+        for x in range(32):
+            total += oncount
+            pulses.append(oncount)
+            if x == 31:
+                pulses.append(units - total)
+            else:
+                total += offcount
+                pulses.append(offcount)
+        #pulses = (oncount, offcount, oncount, offcount, oncount, round(half))
     return pulses
 
 
 def saw_wave(freq, volume=1):
-    units = 4000000 / freq
+    freq = max(freq, 50)
+    units = 3200000 / freq
     units_per_step = units / 32
     pulses = []
     for x in range(32, 0, -1):
-        ontime = math.ceil(units_per_step / x * volume)
+        ontime = max(round(units_per_step / x * volume), 1)
         pulses.append(ontime)
         pulses.append(max(round(units_per_step) - ontime, 1))
     return pulses
@@ -128,7 +146,7 @@ def beep():
         volume = 1/x
         pulses = square_wave(251.6256, volume)
         rmt.write_pulses(pulses)
-        time.sleep_ms(1)
+        #time.sleep_ms(1)
     rmt.loop(False)
 
 def boop():
@@ -137,7 +155,7 @@ def boop():
         volume = 1/x
         pulses = square_wave(123.4708, volume)
         rmt.write_pulses(pulses)
-        time.sleep_ms(1)
+        #time.sleep_ms(1)
     rmt.loop(False)
 
 beep()
@@ -161,7 +179,7 @@ class Display:
         self.fg = gc9a01.WHITE
         self.hl = gc9a01.MAGENTA
 
-        #self.lcd.fill(self.bg)
+        self.lcd.fill(self.bg)
 
         #self.lcd_backlight = Pin(PINS["LCD_BACKLIGHT"], Pin.OUT)
         self.lcd_backlight = Pin(PINS["LCD_BACKLIGHT"])

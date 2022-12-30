@@ -2,4 +2,6 @@
 pcb/#auto_saved_files#
 pcb/disqo-stencil*
 read_angle.py
+firmware/c-test/build
+firmware/c-test/components/pwm_audio/build/
 
