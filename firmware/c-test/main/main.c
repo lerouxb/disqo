@@ -12,8 +12,8 @@
 #include "gc9a01.h"
 #include "font.h"
 
-extern font_t font_roboto_mono_regular_7x16;
-font_t * smallFont = &font_roboto_mono_regular_7x16;
+extern font_t font_roboto_mono_regular_11x24;
+font_t * smallFont = &font_roboto_mono_regular_11x24;
 
 extern font_t font_roboto_mono_regular_14x32;
 font_t * bigFont = &font_roboto_mono_regular_14x32;
