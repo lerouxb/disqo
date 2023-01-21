@@ -10,4 +10,5 @@
   (lib (name "battery-connector")(type "KiCad")(uri "${KIPRJMOD}/footprints/battery-connector.pretty")(options "")(descr ""))
   (lib (name "PKMCS0909E4000-R1")(type "KiCad")(uri "${KIPRJMOD}/footprints/PKMCS0909E4000-R1.pretty")(options "")(descr ""))
   (lib (name "testpoint")(type "KiCad")(uri "${KIPRJMOD}/footprints/testpoint.pretty")(options "")(descr ""))
+  (lib (name "tab")(type "KiCad")(uri "/Users/lerouxb/src/lightpen/pcb/footprints/tab.pretty")(options "")(descr ""))
 )

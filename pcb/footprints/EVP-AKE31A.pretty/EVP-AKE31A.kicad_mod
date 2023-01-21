@@ -40,7 +40,7 @@
   (fp_line (start -0.7493 -1.4859) (end -0.7493 -0.6477) (layer "F.Fab") (width 0.1) (tstamp ed9e8a8b-1772-4e60-b405-3e8c666f721e))
   (fp_line (start 0.7493 -1.4859) (end -0.7493 -1.4859) (layer "F.Fab") (width 0.1) (tstamp f38ef65e-2501-49b1-b53b-f9f0135237a9))
   (fp_line (start -1.9558 -0.6477) (end -1.9558 1.4097) (layer "F.Fab") (width 0.1) (tstamp fa4e738c-ffd6-4b6d-bf4f-831deb742fe3))
-  (pad "" np_thru_hole custom (at 1.84785 0) (size 0.9144 0.9144) (drill 0.5588) (layers "F.Cu" "F.Paste" "F.Mask")
+  (pad "" thru_hole custom (at 1.84785 0) (size 0.9144 0.9144) (drill 0.55) (layers *.Cu *.Mask "F.Paste")
     (options (clearance outline) (anchor circle))
     (primitives
       (gr_poly (pts
@@ -52,7 +52,7 @@
         ) (width 0) (fill yes))
           (gr_rect (start -0.69785 -0.95) (end 0.40215 -0.3) (width 0.12) (fill yes))
     ) (tstamp 395eded8-b180-4dd2-a0f6-bf23fc1018a5))
-  (pad "" np_thru_hole custom (at -1.84785 0) (size 0.9144 0.9144) (drill 0.5588) (layers "F.Cu" "F.Paste" "F.Mask")
+  (pad "" thru_hole custom (at -1.84785 0) (size 0.9144 0.9144) (drill 0.55) (layers *.Cu *.Mask "F.Paste")
     (options (clearance outline) (anchor circle))
     (primitives
       (gr_poly (pts
