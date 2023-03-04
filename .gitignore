@@ -4,4 +4,5 @@ pcb/disqo-stencil*
 read_angle.py
 firmware/c-test/build
 firmware/c-test/components/pwm_audio/build/
+__pycache__
 
