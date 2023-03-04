@@ -556,7 +556,7 @@ void LEDC_Timer_Config(void)
 	ledc_tConfig.duty_resolution=LEDC_TIMER_8_BIT;
 	//ledc_tConfig.bit_num=LEDC_TIMER_8_BIT;
 	ledc_tConfig.timer_num=LEDC_TIMER_0;
-	ledc_tConfig.freq_hz=1000;
+	ledc_tConfig.freq_hz=156250; // 40 000 000 / 256 for max frequency at 8 bit resolution (I could hear 1khz on the piezo somehow)
 	ledc_tConfig.clk_cfg=LEDC_AUTO_CLK;
 	ledc_timer_config(&ledc_tConfig);
 }

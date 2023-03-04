@@ -22,7 +22,7 @@ font_t * bigFont = &font_roboto_mono_regular_14x32;
 
 #define POWER_DISABLE 27
 #define B1 37
-#define B2 39
+#define B2 38
 #define B3 39
 #define USB_CONNECTED 7
 #define BATTERY_CHARGING 4
@@ -35,11 +35,12 @@ font_t * bigFont = &font_roboto_mono_regular_14x32;
 // 'SDA': 21,
 
 void deepsleep() {
-    esp_sleep_enable_ext0_wakeup(B3, 0);
-    while (gpio_get_level(B3) == 0) {
+    while (gpio_get_level(B1) == 0) {
         // wait for it to go high before going to sleep so it doesn't wake up immediately
         vTaskDelay(1 / portTICK_PERIOD_MS);
     }
+    GC9A01_SetBL(0);
+    printf("bye\n");
     esp_deep_sleep_start();
 }
 
@@ -55,7 +56,7 @@ void LCD(void * arg) {
     GC9A01_Init();
     GC9A01_SetBL(64);
 
-    for(int i=0; i<60; ++i) {
+    for (int i=0; i<5; ++i) {
         //Color = rand();
         //GC9A01_FillRect(0, 0, 239, 239, 0);
         char * smallText = "2022/12/30";
@@ -66,6 +67,7 @@ void LCD(void * arg) {
         GC9A01_Text(bigFont, bigText, 120-((float)bigLength/2*bigFont->width), 120-bigFont->height/2, rgb565(1, 0, 1), 0);
 
         GC9A01_Update();
+        printf("%d %d %d\n", gpio_get_level(B1), gpio_get_level(B2), gpio_get_level(B3));
         vTaskDelay(1000/portTICK_PERIOD_MS);
     }
 
@@ -73,6 +75,7 @@ void LCD(void * arg) {
 }
 
 void setup_io(void) {
+
     // outputs
     gpio_config_t io_conf = {};
     io_conf.intr_type = GPIO_INTR_DISABLE;
@@ -99,6 +102,9 @@ void setup_io(void) {
     io_conf.pull_down_en = 0;
     io_conf.pull_up_en = 0;
     gpio_config(&io_conf);
+
+    esp_err_t ret = esp_sleep_enable_ext0_wakeup(B1, 0);
+    assert(ret==ESP_OK);
 }
 
 
