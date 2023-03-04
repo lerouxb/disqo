@@ -18,41 +18,48 @@ bench("import math")
 
 ENCODER_ADDRESS = 54
 
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        dict.__init__(self, *args, **kwargs)
+    def __getattr__(self, name):
+        return self[name]
 
-PINS = {
-    'SCK': 14,
-    'MOSI': 13,
-    'SCL': 22,
-    'SDA': 21,
-    'B1': 37,
-    'B2': 38,
-    'B3': 39,
-    'POWER_DISABLE': 27,
-    'USB_CONNECTED': 7,
-    'BATTERY_CHARGING': 4,
-    'BATTERY_ADC': 34,
-    'LCD_RESET': 8,
-    'LCD_DC': 20,
-    'LCD_CS': 15,
-    'LCD_BACKLIGHT': 19,
-    'PIEZO': 5
-}
+PINS = AttrDict(
+    SCK=14,
+    MOSI=13,
+    SCL=22,
+    SDA=21,
+    B1=37,
+    B2=38,
+    B3=39,
+    POWER_DISABLE=27,
+    USB_CONNECTED=7,
+    BATTERY_CHARGING=4,
+    BATTERY_ADC=34,
+    LCD_RESET=8,
+    LCD_DC=20,
+    LCD_CS=15,
+    LCD_BACKLIGHT=19,
+    PIEZO=5
+)
 
+piezo = Pin(PINS.PIEZO, Pin.OUT)
+piezo.value(False) # a known value
+piezo_pwm = PWM(piezo)
 
-i2c = I2C(0, scl=Pin(PINS["SCL"]), sda=Pin(PINS["SDA"]), freq=400000)
+i2c = I2C(0, scl=Pin(PINS.SCL), sda=Pin(PINS.SDA), freq=400000)
 bench("i2c")
 
-# TODO: make this an object so we can use dot notation
-buttons = {
-    'b1': Pin(PINS["B1"], Pin.IN),
-    'b2': Pin(PINS["B2"], Pin.IN),
-    'b3': Pin(PINS["B3"], Pin.IN)
-}
+buttons = AttrDict(
+    b1=Pin(PINS.B1, Pin.IN),
+    b2=Pin(PINS.B2, Pin.IN),
+    b3=Pin(PINS.B3, Pin.IN)
+)
 
-power_disable = Pin(PINS["POWER_DISABLE"], Pin.OUT)
+power_disable = Pin(PINS.POWER_DISABLE, Pin.OUT)
 power_disable.value(False) # enable power
 
-usb_connected = Pin(PINS["USB_CONNECTED"], Pin.IN)
+usb_connected = Pin(PINS.USB_CONNECTED, Pin.IN)
 
 # necessity of PULL kinda depends on how to deal with various High-Z states
 # and whether it is MCP73831 or MCP73832
@@ -60,18 +67,11 @@ usb_connected = Pin(PINS["USB_CONNECTED"], Pin.IN)
 # MCP73832 is Charge Complete – Standby HIGH-Z
 # Both are Preconditioning, Constant-Current Fast Charge and Constant Voltage LOW
 # Both are Shutdown and No Battery Present HIGH-Z
-battery_charging = Pin(PINS["BATTERY_CHARGING"], Pin.IN, Pin.PULL_UP) 
-battery_adc = ADC(Pin(PINS["BATTERY_ADC"], Pin.IN), atten=ADC.ATTN_11DB)
+battery_charging = Pin(PINS.BATTERY_CHARGING, Pin.IN, Pin.PULL_UP) 
+battery_adc = ADC(Pin(PINS.BATTERY_ADC, Pin.IN), atten=ADC.ATTN_11DB)
 # battery_adc.read_uv() / 1000000 * 1.465
 
-# TODO: RTC?
-# TODO: PWM the backlight
-
-#string = "hello"
-#lcd.text(font, string, 120-16*(len(string)//2), 120-16, gc9a01.WHITE, gc9a01.BLACK)
-
-#esp32.wake_on_ext1((buttons["b1"], buttons["b2"]), esp32.WAKEUP_ANY_LOW)
-esp32.wake_on_ext0(buttons["b3"], esp32.WAKEUP_ALL_LOW)
+esp32.wake_on_ext0(buttons.b1, esp32.WAKEUP_ALL_LOW)
 bench("pins")
 
 rtc = RTC()
@@ -82,174 +82,129 @@ HALF_DISPLAY_WIDTH = 120
 DISPLAY_HEIGHT = 240
 HALF_DISPLAY_HEIGHT = 120
 
-BIG_FONT_WIDTH = 16
-HALF_BIG_FONT_WIDTH = 8
-BIG_FONT_HEIGHT = 32
-HALF_BIG_FONT_HEIGHT = 16
-
-SMALL_FONT_WIDTH = 8
-HALF_SMALL_FONT_WIDTH = 4
-SMALL_FONT_HEIGHT = 16
-HALF_SMALL_FONT_HEIGHT = 8
-
-MIN_TEXT_Y_POS = -7
-MAX_TEXT_Y_POS = 7
-
-# we need half a wave-form of low time for square waves. largest count allowed is 32767
-# let's say the lowest frequency we want to support is 50hz
-# 80000000 / (32767*2*50) = 24.414807580797753
-# 80000000 / 25 = 3200000
-rmt = esp32.RMT(0, pin=Pin(PINS['PIEZO']), clock_div=25, idle_level=1)
-bench("rmt")
-
-def square_wave(freq, volume=1):
-    freq = max(freq, 50)
-    units = round(3200000 / freq)
-    half = units / 2
-    if volume == 1:
-        pulses = (round(half), round(half))
-    else:  
-        ontime = half * volume
-        offtime = half - ontime
-        oncount = max(round(ontime / 32), 1)
-        offcount = max(round(offtime / 31), 1)
-
-        total = 0
-
-        pulses = []
-        for x in range(32):
-            total += oncount
-            pulses.append(oncount)
-            if x == 31:
-                pulses.append(units - total)
-            else:
-                total += offcount
-                pulses.append(offcount)
-        #pulses = (oncount, offcount, oncount, offcount, oncount, round(half))
-    return pulses
-
-
-def saw_wave(freq, volume=1):
-    freq = max(freq, 50)
-    units = 3200000 / freq
-    units_per_step = units / 32
-    pulses = []
-    for x in range(32, 0, -1):
-        ontime = max(round(units_per_step / x * volume), 1)
-        pulses.append(ontime)
-        pulses.append(max(round(units_per_step) - ontime, 1))
-    return pulses
-
 def beep():
-    rmt.loop(True)
-    for x in range(1, 11):
-        volume = 1/x
-        pulses = square_wave(251.6256, volume)
-        rmt.write_pulses(pulses)
-        #time.sleep_ms(1)
-    rmt.loop(False)
+    piezo_pwm.duty_u16(261)
+    piezo_pwm.freq(261)
+    time.sleep(0.1)
+    piezo_pwm.duty_u16(0)
 
 def boop():
-    rmt.loop(True)
-    for x in range(10, 0, -1):
-        volume = 1/x
-        pulses = square_wave(123.4708, volume)
-        rmt.write_pulses(pulses)
-        #time.sleep_ms(1)
-    rmt.loop(False)
+    piezo_pwm.duty_u16(130)
+    piezo_pwm.freq(130)
+    time.sleep(0.1)
+    piezo_pwm.duty_u16(0)
 
 beep()
 bench("beep")
 
-from fonts.romfonts import vga1_bold_16x32 as big_font
-# if we just display the time first we can load just the large font at first
-from fonts.romfonts import vga1_8x16 as small_font
-#from fonts.truetype import NotoSansMono_32 as font
+from fonts import vga1_bold_16x32 as font
 bench("import fonts")
+
+class Theme:
+    def __init__(self, name, background, f_high, f_med, f_low, f_inv, b_high, b_med, b_low, b_inv):
+        self.name = name
+        self.background = background
+        self.f_high = f_high
+        self.f_med = f_med
+        self.f_low = f_low
+        self.f_inv = f_inv
+        self.b_high = b_high
+        self.b_med = b_med
+        self.b_low = b_low
+        self.b_inv = b_inv
+
+themes = [];
+
+def hex565(color):
+    r = int(color[1:3], 16)
+    g = int(color[3:5], 16)
+    b = int(color[4:6], 16)
+    return gc9a01.color565(r, g, b)
+
+themes.append(Theme(
+    name = "pico8",
+    background = hex565("#000000"),
+    f_high = hex565("#ffffff"),
+    f_med = hex565("#fff1e8"),
+    f_low = hex565("#ff78a9"),
+    f_inv = hex565("#ffffff"),
+    b_high = hex565("#c2c3c7"),
+    b_med = hex565("#83769c"),
+    b_low = hex565("#695f56"),
+    b_inv = hex565("#00aefe")
+))        
 
 class Display:
     def __init__(self):
-        self.spi = SPI(1, baudrate=60000000, sck=Pin(PINS["SCK"]), mosi=Pin(PINS["MOSI"]))
+        self.theme = themes[0]
+
+        self.spi = SPI(1, baudrate=60000000, sck=Pin(PINS.SCK), mosi=Pin(PINS.MOSI))
 
         # no idea what buffer size we need
-        self.lcd = gc9a01.GC9A01(self.spi, width=240, height=240, buffer_size=1024, dc=Pin(PINS["LCD_DC"], Pin.OUT), cs=Pin(PINS["LCD_CS"], Pin.OUT), reset=Pin(PINS["LCD_RESET"], Pin.OUT))
+        self.lcd = gc9a01.GC9A01(self.spi, width=240, height=240, buffer_size=1024, dc=Pin(PINS.LCD_DC, Pin.OUT), cs=Pin(PINS.LCD_CS, Pin.OUT), reset=Pin(PINS.LCD_RESET, Pin.OUT))
         self.lcd.init()
 
-        self.bg = gc9a01.BLACK
-        self.fg = gc9a01.WHITE
-        self.hl = gc9a01.MAGENTA
+        self.lcd.fill(self.theme.background)
 
-        self.lcd.fill(self.bg)
-
-        #self.lcd_backlight = Pin(PINS["LCD_BACKLIGHT"], Pin.OUT)
-        self.lcd_backlight = Pin(PINS["LCD_BACKLIGHT"])
-        #self.lcd_backlight.value(True) # enable backlight
+        self.lcd_backlight = Pin(PINS.LCD_BACKLIGHT)
         self.lcd_pwm = PWM(self.lcd_backlight)
         self.lcd_pwm.duty(128) # 0 to 1023
 
-        self.last_lines = ['' for x in range(abs(MIN_TEXT_Y_POS)+MAX_TEXT_Y_POS+1)]
-        self.last_hilight = ()
+        #self.last_lines = ['' for x in range(abs(MIN_TEXT_Y_POS)+MAX_TEXT_Y_POS+1)]
+        #self.last_hilight = ()
 
-    def big_text(self, string, clear_bg=False):
-        # TODO: support reversed text for some characters
-
-        half_width = HALF_BIG_FONT_WIDTH * len(string)
-        if clear_bg:
-            self.lcd.fill_rect(0, HALF_DISPLAY_HEIGHT - HALF_BIG_FONT_HEIGHT, DISPLAY_WIDTH, BIG_FONT_HEIGHT, self.bg)
-        self.lcd.text(big_font, string, HALF_DISPLAY_WIDTH - half_width, HALF_DISPLAY_HEIGHT - HALF_BIG_FONT_HEIGHT, self.hl, self.bg)
-
-    def center_text(self, pos, string, clear_bg):
-        if pos < MIN_TEXT_Y_POS or pos > MAX_TEXT_Y_POS:
-            return
-
-        if pos == 0:
-            self.big_text(string, clear_bg)
-            return
-
-        half_width = HALF_SMALL_FONT_WIDTH * len(string)
-        if pos < 0:
-            y_pos = HALF_DISPLAY_HEIGHT - HALF_BIG_FONT_HEIGHT - (pos * -1 * SMALL_FONT_HEIGHT)
-        else:
-            y_pos = HALF_DISPLAY_HEIGHT + HALF_BIG_FONT_HEIGHT + ((pos-1) * SMALL_FONT_HEIGHT)
-
-        if clear_bg:
-            self.lcd.fill_rect(0, y_pos, DISPLAY_WIDTH, SMALL_FONT_HEIGHT, self.bg)
-        self.lcd.text(small_font, string, HALF_DISPLAY_WIDTH - half_width, y_pos, self.fg, self.bg)
-
-    def crop_line(self, line, pos):
-        # TODO: probably better to crop the center
-        if pos == 0:
-            return line[:math.ceil(DISPLAY_WIDTH/BIG_FONT_WIDTH)]
-        return line[:math.ceil(DISPLAY_WIDTH/SMALL_FONT_WIDTH)]
-
-    def text_list(self, lines, selected_index):
-        for y in range(MIN_TEXT_Y_POS, MAX_TEXT_Y_POS+1):
-            offset = y + (-MIN_TEXT_Y_POS)
-            index = selected_index + y
-            if index < 0 or index >= len(lines):
-                line = ''
-            else:
-                line = lines[index]
-            cropped_line = self.crop_line(line, y)
-            last_line = self.last_lines[offset]
-            if cropped_line != last_line or (y == 0 and self.last_hilight != ()):
-                self.last_higlight = () # always clear the last highlight
-                length_changed = len(cropped_line) != len(last_line)
-                self.last_lines[offset] = cropped_line
-                self.center_text(y, cropped_line, length_changed)
-    
-    def clear_screen(self):
-        for offset in range(len(self.last_lines)):
-            self.last_lines[offset] = ''
-        self.last_higlight = ()
-        self.lcd.fill(self.bg)
-
-
-    # TODO: a method for highlighting all or part of the big text
+#
+#    def center_text(self, pos, string, clear_bg):
+#        if pos < MIN_TEXT_Y_POS or pos > MAX_TEXT_Y_POS:
+#            return
+#
+#        if pos == 0:
+#            self.big_text(string, clear_bg)
+#            return
+#
+#        half_width = HALF_SMALL_FONT_WIDTH * len(string)
+#        if pos < 0:
+#            y_pos = HALF_DISPLAY_HEIGHT - HALF_BIG_FONT_HEIGHT - (pos * -1 * SMALL_FONT_HEIGHT)
+#        else:
+#            y_pos = HALF_DISPLAY_HEIGHT + HALF_BIG_FONT_HEIGHT + ((pos-1) * SMALL_FONT_HEIGHT)
+#
+#        if clear_bg:
+#            self.lcd.fill_rect(0, y_pos, DISPLAY_WIDTH, SMALL_FONT_HEIGHT, self.bg)
+#        self.lcd.text(small_font, string, HALF_DISPLAY_WIDTH - half_width, y_pos, self.fg, self.bg)
+#
+#    def crop_line(self, line, pos):
+#        # TODO: probably better to crop the center
+#        if pos == 0:
+#            return line[:math.ceil(DISPLAY_WIDTH/BIG_FONT_WIDTH)]
+#        return line[:math.ceil(DISPLAY_WIDTH/SMALL_FONT_WIDTH)]
+#
+#    def text_list(self, lines, selected_index):
+#        for y in range(MIN_TEXT_Y_POS, MAX_TEXT_Y_POS+1):
+#            offset = y + (-MIN_TEXT_Y_POS)
+#            index = selected_index + y
+#            if index < 0 or index >= len(lines):
+#                line = ''
+#            else:
+#                line = lines[index]
+#            cropped_line = self.crop_line(line, y)
+#            last_line = self.last_lines[offset]
+#            if cropped_line != last_line or (y == 0 and self.last_hilight != ()):
+#                self.last_higlight = () # always clear the last highlight
+#                length_changed = len(cropped_line) != len(last_line)
+#                self.last_lines[offset] = cropped_line
+#                self.center_text(y, cropped_line, length_changed)
+#    
+#    def clear_screen(self):
+#        for offset in range(len(self.last_lines)):
+#            self.last_lines[offset] = ''
+#        self.last_higlight = ()
+#        self.lcd.fill(self.bg)
+#
+#
+#    # TODO: a method for highlighting all or part of the big text
 
 display = Display()
 bench("display")
-
 
 
 def read_angle():
@@ -259,29 +214,3 @@ def read_angle():
         except OSError:
             print("error")
             pass
-
-
-"""
-start = time.ticks_ms()
-previousLength = 0
-previousWidth = 0
-#while time.ticks_ms() < (start + 5000):
-while True:
-    string = str(read_angle())
-    if not string:
-        string = "error"
-    width = 16 * (len(string)//2)
-    #width = lcd.write_width(font, string)
-    if len(string) != previousLength:
-    #if width != previousWidth
-        lcd.fill_rect(0, 120-16, 240, 32, gc9a01.BLACK)
-        previousLength = len(string)
-        previousWidth = width
-    lcd.text(font, string, 120-width//2, 120-16, gc9a01.WHITE, gc9a01.BLACK)
-    #lcd.write(font, string, 120-width//2, 120-16, gc9a01.WHITE, gc9a01.BLACK)
-
-    if buttons["b1"].value() == False:
-        deepsleep()
-
-    time.sleep_ms(10)
-"""

@@ -1,0 +1,35 @@
+diff --git a/ports/esp32/boards/GENERIC_SPIRAM/board.json b/ports/esp32/boards/GENERIC_SPIRAM/board.json
+index afb57b2ed..a304fee3d 100644
+--- a/ports/esp32/boards/GENERIC_SPIRAM/board.json
++++ b/ports/esp32/boards/GENERIC_SPIRAM/board.json
+@@ -16,8 +16,5 @@
+     "product": "ESP32 with SPIRAM",
+     "thumbnail": "",
+     "url": "https://www.espressif.com/en/products/modules",
+-    "variants": {
+-        "idf3": "Compiled with IDF 3.x"
+-    },
+     "vendor": "Espressif"
+ }
+diff --git a/ports/esp32/boards/GENERIC_SPIRAM/sdkconfig.board b/ports/esp32/boards/GENERIC_SPIRAM/sdkconfig.board
+index a2859acb5..c70264d9f 100644
+--- a/ports/esp32/boards/GENERIC_SPIRAM/sdkconfig.board
++++ b/ports/esp32/boards/GENERIC_SPIRAM/sdkconfig.board
+@@ -1,2 +1,4 @@
+ # SPIRAM increases the size of the firmware, use -Os to reduce it again to fit in iram
+ CONFIG_COMPILER_OPTIMIZATION_SIZE=y
++CONFIG_ESP32_RTC_CLOCK_SOURCE_EXTERNAL_CRYSTAL=y
++CONFIG_BOOTLOADER_LOG_LEVEL_INFO=y
+diff --git a/ports/esp32/boards/sdkconfig.base b/ports/esp32/boards/sdkconfig.base
+index 6b891aa00..b253cb742 100644
+--- a/ports/esp32/boards/sdkconfig.base
++++ b/ports/esp32/boards/sdkconfig.base
+@@ -14,7 +14,7 @@ CONFIG_APP_EXCLUDE_PROJECT_VER_VAR=y
+ CONFIG_APP_EXCLUDE_PROJECT_NAME_VAR=y
+ 
+ # Bootloader config
+-CONFIG_BOOTLOADER_LOG_LEVEL_WARN=y
++CONFIG_BOOTLOADER_LOG_LEVEL_INFO=y
+ 
+ # Change default log level to "ERROR" (instead of "INFO")
+ CONFIG_LOG_DEFAULT_LEVEL_INFO=n

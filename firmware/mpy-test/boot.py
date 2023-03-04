@@ -3,5 +3,7 @@
 #esp.osdebug(None)
 #import webrepl
 #webrepl.start()
-from mainmenu import run
-run()
+#from mainmenu import run
+#run()
+import sys
+sys.insert(0, '/')
