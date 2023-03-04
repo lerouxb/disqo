@@ -3598,6 +3598,11 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 8c3c8374-196d-436a-9491-906fbd732a13)
   )
+  (text "don't put a pull-down on the piezo pin as it is a strapping pin"
+    (at 151.13 66.04 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 9242b231-6565-4834-b36c-7d0f91a76a2a)
+  )
   (text "USB PORT" (at 15.24 17.145 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid a1b2e12d-5c89-42da-99a7-860a990895d1)
@@ -4053,7 +4058,7 @@
     (in_bom yes) (on_board yes)
     (uuid 0a20248d-8ffb-4a43-81cc-a4aa3d3bc6f0)
     (property "Reference" "R16" (id 0) (at 143.002 26.67 0))
-    (property "Value" "100k" (id 1) (at 143.637 28.702 0))
+    (property "Value" "1M" (id 1) (at 143.637 28.702 0))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (id 2) (at 140.335 27.94 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -4849,7 +4854,7 @@
     (in_bom yes) (on_board yes)
     (uuid 58fcfa02-178c-47e4-b188-30e0f1a28842)
     (property "Reference" "R33" (id 0) (at 109.982 80.645 0))
-    (property "Value" "100k" (id 1) (at 110.617 82.677 0))
+    (property "Value" "1M" (id 1) (at 110.617 82.677 0))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (id 2) (at 107.315 81.915 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5523,7 +5528,7 @@
     (in_bom yes) (on_board yes)
     (uuid a11e9c46-579f-4385-9ee6-36980dd27d46)
     (property "Reference" "R20" (id 0) (at 114.935 177.8 90))
-    (property "Value" "100k" (id 1) (at 114.935 181.61 90))
+    (property "Value" "1M" (id 1) (at 114.935 181.61 90))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (id 2) (at 114.935 179.705 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5672,7 +5677,7 @@
     (in_bom yes) (on_board yes)
     (uuid b48424f7-b2c0-4591-9463-3edc49682ffd)
     (property "Reference" "R34" (id 0) (at 260.477 66.04 0))
-    (property "Value" "100k" (id 1) (at 261.112 68.072 0))
+    (property "Value" "1M" (id 1) (at 261.112 68.072 0))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (id 2) (at 257.81 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5799,7 +5804,7 @@
     (in_bom yes) (on_board yes)
     (uuid c7c20aa2-e9ec-4f68-9127-dc5ef7a6baff)
     (property "Reference" "R32" (id 0) (at 109.982 63.5 0))
-    (property "Value" "100k" (id 1) (at 110.617 65.532 0))
+    (property "Value" "1M" (id 1) (at 110.617 65.532 0))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (id 2) (at 107.315 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5931,7 +5936,7 @@
     (in_bom yes) (on_board yes)
     (uuid d4ed82c4-96b4-4775-957e-6511f8ba6e2e)
     (property "Reference" "R3" (id 0) (at 201.295 26.67 0))
-    (property "Value" "100k" (id 1) (at 202.438 28.956 0))
+    (property "Value" "1M" (id 1) (at 202.438 28.956 0))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (id 2) (at 198.755 27.813 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -6623,7 +6628,7 @@
       (reference "R2") (unit 1) (value "5.1k") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/d4ed82c4-96b4-4775-957e-6511f8ba6e2e"
-      (reference "R3") (unit 1) (value "100k") (footprint "Resistor_SMD:R_0402_1005Metric")
+      (reference "R3") (unit 1) (value "1M") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/48972a92-f8c8-4934-b852-69581122404d"
       (reference "R4") (unit 1) (value "22.1k") (footprint "Resistor_SMD:R_0402_1005Metric")
@@ -6662,7 +6667,7 @@
       (reference "R15") (unit 1) (value "10R") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/0a20248d-8ffb-4a43-81cc-a4aa3d3bc6f0"
-      (reference "R16") (unit 1) (value "100k") (footprint "Resistor_SMD:R_0402_1005Metric")
+      (reference "R16") (unit 1) (value "1M") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/db240f8d-94fe-4d99-8cee-f769c3ab6dec"
       (reference "R17") (unit 1) (value "10k") (footprint "Resistor_SMD:R_0402_1005Metric")
@@ -6674,7 +6679,7 @@
       (reference "R19") (unit 1) (value "5.1k") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/a11e9c46-579f-4385-9ee6-36980dd27d46"
-      (reference "R20") (unit 1) (value "100k") (footprint "Resistor_SMD:R_0402_1005Metric")
+      (reference "R20") (unit 1) (value "1M") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/fb00f92b-bd12-46ef-bc6f-2025fec1e85a"
       (reference "R21") (unit 1) (value "22.1k") (footprint "Resistor_SMD:R_0402_1005Metric")
@@ -6710,13 +6715,13 @@
       (reference "R31") (unit 1) (value "10k") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/c7c20aa2-e9ec-4f68-9127-dc5ef7a6baff"
-      (reference "R32") (unit 1) (value "100k") (footprint "Resistor_SMD:R_0402_1005Metric")
+      (reference "R32") (unit 1) (value "1M") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/58fcfa02-178c-47e4-b188-30e0f1a28842"
-      (reference "R33") (unit 1) (value "100k") (footprint "Resistor_SMD:R_0402_1005Metric")
+      (reference "R33") (unit 1) (value "1M") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/b48424f7-b2c0-4591-9463-3edc49682ffd"
-      (reference "R34") (unit 1) (value "100k") (footprint "Resistor_SMD:R_0402_1005Metric")
+      (reference "R34") (unit 1) (value "1M") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/4caf1c03-a213-489a-a665-c3f72b156de1"
       (reference "SW1") (unit 1) (value "top-switch") (footprint "KXT-311:KXT 311 LHS")
