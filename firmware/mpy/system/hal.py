@@ -4,13 +4,13 @@ from machine import SPI, I2C, ADC, Pin, PWM, RTC
 import gc9a01
 import esp32
 
-LAST_TIME = time.ticks_ms()
+#LAST_TIME = time.ticks_ms()
 
-def bench(name):
-    global LAST_TIME
-    new_time = time.ticks_ms()
-    print(name, new_time - LAST_TIME)
-    LAST_TIME = new_time
+#def bench(name):
+#    global LAST_TIME
+#    new_time = time.ticks_ms()
+#    print(name, new_time - LAST_TIME)
+#    LAST_TIME = new_time
 
 
 ENCODER_ADDRESS = 54
@@ -40,7 +40,7 @@ PINS = AttrDict(
 
 piezo = Pin(PINS.PIEZO, Pin.OUT)
 piezo.value(False) # a known value
-piezo_pwm = PWM(piezo)
+piezo_pwm = PWM(piezo, duty_u16=0)
 
 i2c = I2C(0, scl=Pin(PINS.SCL), sda=Pin(PINS.SDA), freq=400000)
 
@@ -53,7 +53,7 @@ buttons = AttrDict(
 power_disable = Pin(PINS.POWER_DISABLE, Pin.OUT)
 power_disable.value(False) # enable power
 
-usb_connected = Pin(PINS.USB_CONNECTED, Pin.IN)
+usb_connected = Pin(PINS.USB_CONNECTED, Pin.IN, Pin.PULL_DOWN)
 
 # necessity of PULL kinda depends on how to deal with various High-Z states
 # and whether it is MCP73831 or MCP73832
@@ -63,7 +63,6 @@ usb_connected = Pin(PINS.USB_CONNECTED, Pin.IN)
 # Both are Shutdown and No Battery Present HIGH-Z
 battery_charging = Pin(PINS.BATTERY_CHARGING, Pin.IN, Pin.PULL_UP) 
 battery_adc = ADC(Pin(PINS.BATTERY_ADC, Pin.IN), atten=ADC.ATTN_11DB)
-# battery_adc.read_uv() / 1000000 * 1.465
 
 esp32.wake_on_ext0(buttons.b1, esp32.WAKEUP_ALL_LOW)
 
@@ -86,7 +85,7 @@ def boop():
     time.sleep(0.1)
     piezo_pwm.duty_u16(0)
 
-beep()
+#beep()
 
 spi = SPI(1, baudrate=60000000, sck=Pin(PINS.SCK), mosi=Pin(PINS.MOSI))
 # no idea what buffer size we need
@@ -105,6 +104,9 @@ def read_angle():
         except OSError:
             print("error")
             pass
+
+def read_voltage():
+    return battery_adc.read_uv() / 1000000 * 1.465
 
 def deepsleep():
     machine.deepsleep()

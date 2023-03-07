@@ -1,5 +1,15 @@
 {
     "files.associations": {
         "dynruntime.h": "c"
-    }
+    },
+    "python.languageServer": "Pylance",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingModuleSource": "none"
+    },
+    "python.analysis.typeshedPaths": [
+        "typings"
+    ],
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
 }

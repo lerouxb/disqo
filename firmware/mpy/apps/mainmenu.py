@@ -6,11 +6,9 @@ from gui.menu import Menu
 DATE_INDEX = 2
 TIME_INDEX = 3
 
-mainmenu = None
-
 class MainMenu:
     def __init__(self):
-        self.start = time.ticks_ms()
+        self.last_update = time.ticks_ms()
         self.items = [
             # volume?
             'theme',
@@ -31,9 +29,9 @@ class MainMenu:
 
     def tick(self):
         # periodically update the date/time
-        if time.ticks_ms() > (self.start + 1000):
+        if time.ticks_ms() > (self.last_update + 1000):
             self.update()
-            self.start = time.ticks_ms()
+            self.last_update = time.ticks_ms()
 
         button = self.menu.tick()
         
@@ -45,12 +43,5 @@ class MainMenu:
             # select menu item
             beep()
 
-def init():
-    global mainmenu
-    mainmenu = MainMenu()
-
-def tick():
-    global mainmenu
-    if not mainmenu:
-        return
-    mainmenu.tick()
+def start():
+    return MainMenu()

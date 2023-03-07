@@ -1,11 +1,10 @@
 from utils.encoder import angle_difference
-from system.hal import read_angle, bench, buttons
+from system.hal import read_angle, buttons
 from gui.big_small_lines import BigSmallLines
 from gui.themes import current_theme
 
 from fonts import vga1_8x16 as small_font
 from fonts import vga1_bold_16x32 as big_font
-bench("import fonts")
 
 
 CLICKS_PER_STEP = 256

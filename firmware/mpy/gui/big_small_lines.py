@@ -1,8 +1,6 @@
 import math
 from system.hal import lcd, DISPLAY_HEIGHT, HALF_DISPLAY_HEIGHT, DISPLAY_WIDTH, HALF_DISPLAY_WIDTH
 
-print('this is big_small_lines')
-
 class BigSmallLines:
     def __init__(self, theme, big_font, small_font):
         self.theme = theme
@@ -21,7 +19,7 @@ class BigSmallLines:
             lcd.fill_rect(0, HALF_DISPLAY_HEIGHT - self.big_font.HEIGHT//2, DISPLAY_WIDTH, self.big_font.HEIGHT, self.theme.background)
 
         half_width = self.big_font.WIDTH//2 * len(string)
-        lcd.text(self.big_font, string, HALF_DISPLAY_WIDTH - half_width, HALF_DISPLAY_HEIGHT - self.big_font.HEIGHT//2, self.theme.f_low, self.theme.background) 
+        lcd.text(self.big_font, string, HALF_DISPLAY_WIDTH - half_width, HALF_DISPLAY_HEIGHT - self.big_font.HEIGHT//2, self.theme.f_med, self.theme.background) 
 
     def center_text(self, pos, string, clear_bg):
         if pos < self.min_text_y_pos or pos > self.max_text_y_pos:
