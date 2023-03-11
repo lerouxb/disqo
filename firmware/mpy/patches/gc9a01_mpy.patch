@@ -1,0 +1,256 @@
+diff --git a/src/gc9a01.c b/src/gc9a01.c
+index a157c32..71e8537 100644
+--- a/src/gc9a01.c
++++ b/src/gc9a01.c
+@@ -195,11 +195,15 @@ STATIC mp_obj_t gc9a01_GC9A01_hard_reset(mp_obj_t self_in) {
+ 
+     CS_LOW();
+     RESET_HIGH();
+-    mp_hal_delay_ms(50);
++    //mp_hal_delay_ms(50);
++    mp_hal_delay_ms(5); // from arduino driver
+     RESET_LOW();
+-    mp_hal_delay_ms(50);
++    //mp_hal_delay_ms(50); 
++    mp_hal_delay_ms(10); // from arduino driver
+     RESET_HIGH();
+-    mp_hal_delay_ms(150);
++    //mp_hal_delay_ms(150);
++    //mp_hal_delay_ms(120); // from arduino driver. is this really necessary?
++    mp_hal_delay_ms(10);
+     CS_HIGH();
+     return mp_const_none;
+ }
+@@ -420,45 +424,47 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(gc9a01_GC9A01_blit_buffer_obj, 6, 6,
+ 
+ STATIC mp_obj_t gc9a01_GC9A01_draw(size_t n_args, const mp_obj_t *args) {
+ 	gc9a01_GC9A01_obj_t *self = MP_OBJ_TO_PTR(args[0]);
+-	char		single_char_s[] = {0, 0};
+-	const char *s;
++    char single_char_s[] = {0, 0};
++    const char *s;
+ 
+-	mp_obj_module_t *hershey   = MP_OBJ_TO_PTR(args[1]);
++    mp_obj_module_t *hershey = MP_OBJ_TO_PTR(args[1]);
+ 
+-	if (mp_obj_is_int(args[2])) {
+-		mp_int_t c		 = mp_obj_get_int(args[2]);
+-		single_char_s[0] = c & 0xff;
+-		s				 = single_char_s;
+-	} else {
+-		s= mp_obj_str_get_str(args[2]);
+-	}
++    if (mp_obj_is_int(args[2])) {
++        mp_int_t c = mp_obj_get_int(args[2]);
++        single_char_s[0] = c & 0xff;
++        s = single_char_s;
++    } else {
++        s = mp_obj_str_get_str(args[2]);
++    }
+ 
+-	mp_int_t		 x		   = mp_obj_get_int(args[3]);
+-	mp_int_t		 y		   = mp_obj_get_int(args[4]);
+-	mp_int_t		 color     = mp_obj_get_int(args[5]);
++    mp_int_t x = mp_obj_get_int(args[3]);
++    mp_int_t y = mp_obj_get_int(args[4]);
+ 
+-    mp_float_t scale = 1.0;
+-    if (mp_obj_is_float(args[6])) {
+-        scale = mp_obj_float_get(args[6]);
+-    }
++    mp_int_t color = (n_args > 5) ? mp_obj_get_int(args[5]) : WHITE;
+ 
+-    if (mp_obj_is_int(args[6])) {
+-        scale =  (float) mp_obj_get_int(args[6]);
++    mp_float_t scale = 1.0;
++    if (n_args > 6) {
++        if (mp_obj_is_float(args[6])) {
++            scale = mp_obj_float_get(args[6]);
++        }
++        if (mp_obj_is_int(args[6])) {
++            scale = (mp_float_t)mp_obj_get_int(args[6]);
++        }
+     }
+ 
+-	mp_obj_dict_t *	 dict = MP_OBJ_TO_PTR(hershey->globals);
+-	mp_obj_t *		 index_data_buff = mp_obj_dict_get(dict, MP_OBJ_NEW_QSTR(MP_QSTR_INDEX));
+-	mp_buffer_info_t index_bufinfo;
+-	mp_get_buffer_raise(index_data_buff, &index_bufinfo, MP_BUFFER_READ);
+-	uint8_t *index = index_bufinfo.buf;
++    mp_obj_dict_t *dict = MP_OBJ_TO_PTR(hershey->globals);
++    mp_obj_t *index_data_buff = mp_obj_dict_get(dict, MP_OBJ_NEW_QSTR(MP_QSTR_INDEX));
++    mp_buffer_info_t index_bufinfo;
++    mp_get_buffer_raise(index_data_buff, &index_bufinfo, MP_BUFFER_READ);
++    uint8_t *index = index_bufinfo.buf;
+ 
+-	mp_obj_t *		 font_data_buff = mp_obj_dict_get(dict, MP_OBJ_NEW_QSTR(MP_QSTR_FONT));
+-	mp_buffer_info_t font_bufinfo;
+-	mp_get_buffer_raise(font_data_buff, &font_bufinfo, MP_BUFFER_READ);
+-	int8_t *font = font_bufinfo.buf;
++    mp_obj_t *font_data_buff = mp_obj_dict_get(dict, MP_OBJ_NEW_QSTR(MP_QSTR_FONT));
++    mp_buffer_info_t font_bufinfo;
++    mp_get_buffer_raise(font_data_buff, &font_bufinfo, MP_BUFFER_READ);
++    int8_t *font = font_bufinfo.buf;
+ 
+     int16_t from_x = x;
+-    int16_t from_y  = y;
++    int16_t from_y = y;
+     int16_t to_x = x;
+     int16_t to_y = y;
+     int16_t pos_x = x;
+@@ -469,27 +475,27 @@ STATIC mp_obj_t gc9a01_GC9A01_draw(size_t n_args, const mp_obj_t *args) {
+ 
+     while ((c = *s++)) {
+         if (c >= 32 && c <= 127) {
+-            ii = (c-32) * 2;
++            ii = (c - 32) * 2;
+ 
+-			int16_t offset = index[ii] | (index[ii+1] << 8);
++            int16_t offset = index[ii] | (index[ii + 1] << 8);
+             int16_t length = font[offset++];
+-            int16_t left = LROUND((font[offset++] - 0x52) * scale);
+-            int16_t right = LROUND((font[offset++] - 0x52) * scale);
++            int16_t left = (int)(scale * (font[offset++] - 0x52) + 0.5);
++            int16_t right = (int)(scale * (font[offset++] - 0x52) + 0.5);
+             int16_t width = right - left;
+ 
+             if (length) {
+                 int16_t i;
+                 for (i = 0; i < length; i++) {
+                     if (font[offset] == ' ') {
+-                        offset+=2;
++                        offset += 2;
+                         penup = true;
+                         continue;
+                     }
+ 
+-                    int16_t vector_x = LROUND((font[offset++] - 0x52) * scale);
+-                    int16_t vector_y = LROUND((font[offset++] - 0x52) * scale);
++                    int16_t vector_x = (int)(scale * (font[offset++] - 0x52) + 0.5);
++                    int16_t vector_y = (int)(scale * (font[offset++] - 0x52) + 0.5);
+ 
+-                    if (!i ||  penup) {
++                    if (!i || penup) {
+                         from_x = pos_x + vector_x - left;
+                         from_y = pos_y + vector_y;
+                     } else {
+@@ -507,10 +513,65 @@ STATIC mp_obj_t gc9a01_GC9A01_draw(size_t n_args, const mp_obj_t *args) {
+         }
+     }
+ 
+-	return mp_const_none;
++    return mp_const_none;
+ }
+ 
+-STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(gc9a01_GC9A01_draw_obj, 6, 7, gc9a01_GC9A01_draw);
++STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(gc9a01_GC9A01_draw_obj, 5, 7, gc9a01_GC9A01_draw);
++
++STATIC mp_obj_t gc9a01_GC9A01_draw_len(size_t n_args, const mp_obj_t *args) {
++    char single_char_s[] = {0, 0};
++    const char *s;
++
++    mp_obj_module_t *hershey = MP_OBJ_TO_PTR(args[1]);
++
++    if (mp_obj_is_int(args[2])) {
++        mp_int_t c = mp_obj_get_int(args[2]);
++        single_char_s[0] = c & 0xff;
++        s = single_char_s;
++    } else {
++        s = mp_obj_str_get_str(args[2]);
++    }
++
++    mp_float_t scale = 1.0;
++    if (n_args > 3) {
++        if (mp_obj_is_float(args[3])) {
++            scale = mp_obj_float_get(args[3]);
++        }
++        if (mp_obj_is_int(args[3])) {
++            scale = (mp_float_t)mp_obj_get_int(args[3]);
++        }
++    }
++
++    mp_obj_dict_t *dict = MP_OBJ_TO_PTR(hershey->globals);
++    mp_obj_t *index_data_buff = mp_obj_dict_get(dict, MP_OBJ_NEW_QSTR(MP_QSTR_INDEX));
++    mp_buffer_info_t index_bufinfo;
++    mp_get_buffer_raise(index_data_buff, &index_bufinfo, MP_BUFFER_READ);
++    uint8_t *index = index_bufinfo.buf;
++
++    mp_obj_t *font_data_buff = mp_obj_dict_get(dict, MP_OBJ_NEW_QSTR(MP_QSTR_FONT));
++    mp_buffer_info_t font_bufinfo;
++    mp_get_buffer_raise(font_data_buff, &font_bufinfo, MP_BUFFER_READ);
++    int8_t *font = font_bufinfo.buf;
++
++    int16_t print_width = 0;
++    char c;
++    int16_t ii;
++
++    while ((c = *s++)) {
++        if (c >= 32 && c <= 127) {
++            ii = (c - 32) * 2;
++
++            int16_t offset = (index[ii] | (index[ii + 1] << 8)) + 1;
++            int16_t left =  font[offset++] - 0x52;
++            int16_t right = font[offset++] - 0x52;
++            int16_t width = right - left;
++            print_width += width;
++        }
++    }
++
++    return mp_obj_new_int((int)(print_width * scale + 0.5));
++}
++STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(gc9a01_GC9A01_draw_len_obj, 3, 4, gc9a01_GC9A01_draw_len);
+ 
+ STATIC uint32_t bs_bit		= 0;
+ uint8_t *		bitmap_data = NULL;
+@@ -1027,10 +1088,12 @@ MP_DEFINE_CONST_FUN_OBJ_2(gc9a01_GC9A01_vscsad_obj, gc9a01_GC9A01_vscsad);
+ STATIC mp_obj_t gc9a01_GC9A01_init(mp_obj_t self_in) {
+     gc9a01_GC9A01_obj_t *self = MP_OBJ_TO_PTR(self_in);
+     gc9a01_GC9A01_hard_reset(self_in);
+-    mp_hal_delay_ms(100);
++    // hard_reset already delayed
++    //mp_hal_delay_ms(100);
+ 
+-    gc9a01_GC9A01_soft_reset(self_in);
+-    mp_hal_delay_ms(100);
++    // we just did a hard reset, why do a soft reset as well?
++    //gc9a01_GC9A01_soft_reset(self_in);
++    //mp_hal_delay_ms(100);
+ 
+     write_cmd(self, 0xEF, (const uint8_t *) NULL, 0);
+ 	write_cmd(self, 0xEB, (const uint8_t *) "\x14", 1);
+@@ -1079,19 +1142,21 @@ STATIC mp_obj_t gc9a01_GC9A01_init(mp_obj_t self_in) {
+     write_cmd(self, 0x98, (const uint8_t *) "\x3e\x07", 2);
+ 	write_cmd(self, 0x35, (const uint8_t *) NULL, 0);
+ 	write_cmd(self, 0x21, (const uint8_t *) NULL, 0);
+-	write_cmd(self, 0x11, (const uint8_t *) NULL, 0);
+-    mp_hal_delay_ms(120);
+-
+-	write_cmd(self, 0x29, (const uint8_t *) NULL, 0);
++	write_cmd(self, 0x11, (const uint8_t *) NULL, 0); // sleep out
++    //mp_hal_delay_ms(120); // display says 5msec. you have to wait 120 after sleep on/out before sleep on/out can be sent
+ 	mp_hal_delay_ms(20);
+ 
++	write_cmd(self, 0x29, (const uint8_t *) NULL, 0); // display on
++	mp_hal_delay_ms(20); // is this necessary?
++
+     set_rotation(self);
+ 
+     if (self->backlight)
+         mp_hal_pin_write(self->backlight, 1);
+ 
+-    write_cmd(self, GC9A01_DISPON, (const uint8_t *) NULL, 0);
+-    mp_hal_delay_ms(120);
++    // it is already turned on above?
++    //write_cmd(self, GC9A01_DISPON, (const uint8_t *) NULL, 0);
++    //mp_hal_delay_ms(120);
+ 
+     return mp_const_none;
+ }
+@@ -1434,6 +1499,7 @@ STATIC const mp_rom_map_elem_t gc9a01_GC9A01_locals_dict_table[] = {
+     { MP_ROM_QSTR(MP_QSTR_line), MP_ROM_PTR(&gc9a01_GC9A01_line_obj) },
+     { MP_ROM_QSTR(MP_QSTR_blit_buffer), MP_ROM_PTR(&gc9a01_GC9A01_blit_buffer_obj) },
+   	{ MP_ROM_QSTR(MP_QSTR_draw), MP_ROM_PTR(&gc9a01_GC9A01_draw_obj)},
++    {MP_ROM_QSTR(MP_QSTR_draw_len), MP_ROM_PTR(&gc9a01_GC9A01_draw_len_obj)},
+ 	{ MP_ROM_QSTR(MP_QSTR_bitmap), MP_ROM_PTR(&gc9a01_GC9A01_bitmap_obj)},
+ 	{ MP_ROM_QSTR(MP_QSTR_pbitmap), MP_ROM_PTR(&gc9a01_GC9A01_pbitmap_obj)},
+     { MP_ROM_QSTR(MP_QSTR_fill_rect), MP_ROM_PTR(&gc9a01_GC9A01_fill_rect_obj) },

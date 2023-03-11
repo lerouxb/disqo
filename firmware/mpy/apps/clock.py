@@ -7,8 +7,8 @@ from utils.encoder import angle_difference
 from gui.big_small_lines import BigSmallLines
 from gui.themes import current_theme
 
-from fonts import vga1_8x16 as small_font
-from fonts import vga1_bold_16x32 as big_font
+import vga2_8x16 as small_font
+import vga2_bold_16x32 as big_font
 
 def get_power_source():
     if usb_connected.value():
@@ -78,6 +78,7 @@ class Clock:
                 # wait for the buttons to be released so the chip doesn't immediately wake up
                 while buttons.b1.value() == False or buttons.b3.value() == False:
                     pass
+                # TODO:
                 deepsleep()
 
             elif b1:
