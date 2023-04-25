@@ -7,7 +7,8 @@
                 "/home/lerouxb/src/micropython",
                 "/home/lerouxb/src/micropython/ports/esp32",
                 "/home/lerouxb/src/micropython/ports/esp32/boards/GENERIC_SPIRAM",
-                "/home/lerouxb/esp/esp-idf/components/**"
+                "/home/lerouxb/esp/esp-idf/components/**",
+                "/home/lerouxb/src/micropython/ports/esp32/build-GENERIC_SPIRAM"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

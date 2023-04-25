@@ -1,8 +1,10 @@
-make clean BOARD=GENERIC_SPIRAM
+# remember to set the PORT env var to point to your serial port
 
-make -j 4 DEBUG=1 BOARD=GENERIC_SPIRAM PORT=/dev/cu.usbserial-14220 USER_C_MODULES=../../../../gc9a01_mpy/src/micropython.cmake
+#make clean BOARD=GENERIC_SPIRAM
 
-make BOARD=GENERIC_SPIRAM PORT=/dev/cu.usbserial-14220 USER_C_MODULES=../../../../gc9a01_mpy/src/micropython.cmake erase
+make -j 4 DEBUG=1 BOARD=GENERIC_SPIRAM USER_C_MODULES=../../../../gc9a01_mpy/src/micropython.cmake
 
-make BOARD=GENERIC_SPIRAM PORT=/dev/cu.usbserial-14220 USER_C_MODULES=../../../../gc9a01_mpy/src/micropython.cmake deploy
+#make BOARD=GENERIC_SPIRAM USER_C_MODULES=../../../../gc9a01_mpy/src/micropython.cmake erase
+
+make BOARD=GENERIC_SPIRAM USER_C_MODULES=../../../../gc9a01_mpy/src/micropython.cmake deploy
 

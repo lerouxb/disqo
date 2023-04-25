@@ -1,10 +1,18 @@
 from utils.encoder import angle_difference
+from utils.font import Font
 from system.hal import read_angle, buttons
 from gui.big_small_lines import BigSmallLines
 from gui.themes import current_theme
 
-import vga2_8x16 as small_font
-import vga2_bold_16x32 as big_font
+#import fonts.vga2_8x16 as small_font
+#import fonts.vga2_bold_16x32 as big_font
+
+#import fonts.squarewave as small_font
+#import fonts.squarewave_bold as big_font
+
+small_font = Font("Manrope_SemiBold16", 17, 20)
+#small_font = Font("Manrope_SemiBold24", 24, 29)
+big_font = Font("Manrope_SemiBold32", 32, 41)
 
 
 CLICKS_PER_STEP = 256

@@ -20,7 +20,7 @@ if memory:
         data = json.loads(memory)
         app_module_name = data["app"]
     except (KeyError, ValueError) as error:
-        print(error)
+        sys.print_exception(error)
 
 print(f"starting {app_module_name}")
 

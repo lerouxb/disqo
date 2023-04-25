@@ -1,8 +1,10 @@
 import time
+import json
 import machine
-from machine import SPI, I2C, ADC, Pin, PWM, RTC
 import gc9a01
 import esp32
+
+Pin = machine.Pin
 
 #LAST_TIME = time.ticks_ms()
 
@@ -40,9 +42,9 @@ PINS = AttrDict(
 
 piezo = Pin(PINS.PIEZO, Pin.OUT)
 piezo.value(False) # a known value
-piezo_pwm = PWM(piezo, duty_u16=0)
+piezo_pwm = machine.PWM(piezo, duty_u16=0)
 
-i2c = I2C(0, scl=Pin(PINS.SCL), sda=Pin(PINS.SDA), freq=400000)
+i2c = machine.I2C(0, scl=Pin(PINS.SCL), sda=Pin(PINS.SDA), freq=400000)
 
 buttons = AttrDict(
     b1=Pin(PINS.B1, Pin.IN),
@@ -62,11 +64,11 @@ usb_connected = Pin(PINS.USB_CONNECTED, Pin.IN, Pin.PULL_DOWN)
 # Both are Preconditioning, Constant-Current Fast Charge and Constant Voltage LOW
 # Both are Shutdown and No Battery Present HIGH-Z
 battery_charging = Pin(PINS.BATTERY_CHARGING, Pin.IN, Pin.PULL_UP) 
-battery_adc = ADC(Pin(PINS.BATTERY_ADC, Pin.IN), atten=ADC.ATTN_11DB)
+battery_adc = machine.ADC(Pin(PINS.BATTERY_ADC, Pin.IN), atten=machine.ADC.ATTN_11DB)
 
 esp32.wake_on_ext0(buttons.b1, esp32.WAKEUP_ALL_LOW)
 
-rtc = RTC()
+rtc = machine.RTC()
 
 DISPLAY_WIDTH = 240
 HALF_DISPLAY_WIDTH = 120
@@ -87,14 +89,14 @@ def boop():
 
 #beep()
 
-spi = SPI(1, baudrate=60000000, sck=Pin(PINS.SCK), mosi=Pin(PINS.MOSI))
+spi = machine.SPI(1, baudrate=60000000, sck=Pin(PINS.SCK), mosi=Pin(PINS.MOSI))
 # no idea what buffer size we need
 lcd = gc9a01.GC9A01(spi, width=240, height=240, buffer_size=1024, dc=Pin(PINS.LCD_DC, Pin.OUT), cs=Pin(PINS.LCD_CS, Pin.OUT), reset=Pin(PINS.LCD_RESET, Pin.OUT))
 lcd.init()
 lcd.fill(0)
 
 lcd_backlight = Pin(PINS.LCD_BACKLIGHT)
-lcd_pwm = PWM(lcd_backlight)
+lcd_pwm = machine.PWM(lcd_backlight)
 lcd_pwm.duty(128) # 0 to 1023
 
 def read_angle():
@@ -109,4 +111,13 @@ def read_voltage():
     return battery_adc.read_uv() / 1000000 * 1.465
 
 def deepsleep():
+    lcd.fill(0)
     machine.deepsleep()
+
+def restart():
+    lcd.fill(0)
+    machine.soft_reset()
+
+def launch(app):
+    rtc.memory(json.dumps({ "app": app }))
+    restart()

@@ -1,14 +1,21 @@
 import time
-import json
-from machine import RTC, soft_reset
-from system.hal import rtc, buttons, usb_connected, read_angle, read_voltage, battery_charging, deepsleep
+# TODO: this is too much. maybe just import system.hal as hal
+from system.hal import rtc, buttons, usb_connected, read_angle, read_voltage, battery_charging, deepsleep, launch
 from utils.datetime import format_date, format_time
 from utils.encoder import angle_difference
+from utils.font import Font
 from gui.big_small_lines import BigSmallLines
 from gui.themes import current_theme
 
-import vga2_8x16 as small_font
-import vga2_bold_16x32 as big_font
+#import fonts.vga2_8x16 as small_font
+#import fonts.vga2_bold_16x32 as big_font
+
+#import fonts.squarewave as small_font
+#import fonts.squarewave_bold as big_font
+
+small_font = Font("Manrope_SemiBold16", 17, 20)
+#small_font = Font("Manrope_SemiBold24", 24, 29)
+big_font = Font("Manrope_SemiBold32", 32, 41)
 
 def get_power_source():
     if usb_connected.value():
@@ -17,10 +24,13 @@ def get_power_source():
         return 'bat'
 
 def get_charge_status():
-    if battery_charging.value():
-        return 'done'
+    if usb_connected.value():
+        if battery_charging.value():
+            return 'done'
+        else:
+            return 'charge'
     else:
-        return 'charge'
+        return 'N/A'
 
 def get_buttons_status():
     parts = []
@@ -78,13 +88,10 @@ class Clock:
                 # wait for the buttons to be released so the chip doesn't immediately wake up
                 while buttons.b1.value() == False or buttons.b3.value() == False:
                     pass
-                # TODO:
                 deepsleep()
 
-            elif b1:
-                rtc = RTC()
-                rtc.memory(json.dumps({ "app": "mainmenu" }))
-                soft_reset()
+            elif b3 == False:
+                launch('mainmenu')
 
         
         if needs_update:
