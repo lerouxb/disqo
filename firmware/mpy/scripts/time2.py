@@ -187,8 +187,8 @@ def run():
         screen[:] = background
 
         # render the ghost text for the LCD effect
-        #lcd.render_aligned("DSEG7Classic_Bold48", 120 - total_width//2, 120-24, 0, "88:88", ghost_color, bg_color, screen)
-        #lcd.render_aligned("DSEG7Classic_Bold24", 120 + total_width//2, 120-18, 2, "88", ghost_color, bg_color, screen)
+        lcd.render_aligned("DSEG7Classic_Bold48", 120 - total_width//2, 120-24, 0, "88:88", ghost_color, bg_color, screen)
+        lcd.render_aligned("DSEG7Classic_Bold24", 120 + total_width//2, 120-18, 2, "88", ghost_color, bg_color, screen)
 
         # then the foreground text
         for line in lines:
