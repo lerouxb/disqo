@@ -24,7 +24,9 @@ class Font:
 time_font = Font("DSEG7Classic_Bold48", 32, 48)
 seconds_font = Font("DSEG7Classic_Bold24", 20, 24)
 text_font = Font("Manrope_SemiBold16", 17, 20)
-icon_font = Font("MaterialIcons_Regular16", 8, 14)
+#text_font = Font("Manrope_SemiBold24", 24, 29)
+#icon_font = Font("MaterialIcons_Regular16", 8, 14)
+icon_font = Font("MaterialIcons_Regular24", 10, 20)
 indicator_font = Font("Manrope_SemiBold32", 32, 41)
 
 class Align:
