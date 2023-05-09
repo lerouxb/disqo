@@ -89,7 +89,9 @@ def boop():
 
 #beep()
 
-spi = machine.SPI(1, baudrate=60000000, sck=Pin(PINS.SCK), mosi=Pin(PINS.MOSI))
+# TODO: try 80Mhz again?
+#spi = machine.SPI(1, baudrate=60000000, sck=Pin(PINS.SCK), mosi=Pin(PINS.MOSI))
+spi = machine.SPI(1, baudrate=80000000, sck=Pin(PINS.SCK), mosi=Pin(PINS.MOSI))
 # no idea what buffer size we need
 lcd = gc9a01.GC9A01(spi, width=240, height=240, buffer_size=1024, dc=Pin(PINS.LCD_DC, Pin.OUT), cs=Pin(PINS.LCD_CS, Pin.OUT), reset=Pin(PINS.LCD_RESET, Pin.OUT))
 lcd.init()
