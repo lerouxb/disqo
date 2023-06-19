@@ -1,7 +1,7 @@
 
 import gc9a01
 import time
-from system.hal import lcd, rtc, read_voltage, read_angle, buttons
+from system.hal import lcd, rtc, read_voltage, read_angle, buttons, usb_connected, battery_charging, deepsleep
 
 bg_color = gc9a01.color565(255, 255, 255)
 ghost_color = gc9a01.color565(230,230,230)
@@ -13,6 +13,17 @@ controlx = 90
 controly = 45
     
 DOW = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+
+class Battery:
+    CHARGE = "\ue1a3"
+    FULL = "\ue1a4"
+    L6 = "\uebd2"
+    L5 = "\uebd4"
+    L4 = "\uebe2"
+    L3 = "\uebdd"
+    L2 = "\uebe0"
+    L1 = "\uebd9"
+    ICONS = [L1, L2, L3, L4, L5, L6, FULL]
 
 class Font:
     def __init__(self, name, max_width, height):
@@ -111,6 +122,34 @@ def format_date(dt):
     dow = DOW[W]
     return "{M}-{D} {dow}".format(M=M, D=D, dow=dow)
 
+MAX_CHARGE = 4.2
+MIN_CHARGE = 3.5
+BATTERY_STEP = 1/len(Battery.ICONS)
+def get_battery_charge_icon():
+    voltage = max(min(read_voltage(), MAX_CHARGE), MIN_CHARGE)
+    v = (voltage - MIN_CHARGE) / (MAX_CHARGE - MIN_CHARGE)
+    comp = 0
+    for i in range(1, len(Battery.ICONS)):
+        comp += BATTERY_STEP
+        if v <= comp:
+            return Battery.ICONS[i - 1] 
+    return Battery.FULL
+
+def get_battery_icon(dt):
+    [Y, M, D, W, h, m, s, u] = dt
+    #print(usb_connected.value(), battery_charging.value())
+    # TODO: this is always True even with USB unplugged
+    if usb_connected.value(): # high == connected
+        if battery_charging.value(): # high == done
+            return Battery.FULL
+        else:
+            if s % 2 == 0:
+                return Battery.CHARGE
+            else:
+                return get_battery_charge_icon()
+    else:
+        return get_battery_charge_icon()
+
 def read_button(button):
     return not button.value()
 
@@ -143,8 +182,7 @@ def run():
         greeting_string = greeting(dt) + ' >'
         time_string = format_time(dt)
         seconds_string = format_seconds(dt)
-        # TODO: different icon based on battery level
-        battery_icon = "\ue1a3"
+        battery_icon = get_battery_icon(dt)
         #  only change the voltage value if it changed significantly since last reading
         voltage = read_voltage()
         if abs(voltage - last_voltage) > 0.05:
@@ -212,7 +250,7 @@ def run():
         # 50 if we don't blit the buffer
         # 24 if we then also don't copy over the entire background at the start
         # less if we don't re-render all the text
-        print(renders, time.ticks_ms() - start_time)
+        #print(renders, time.ticks_ms() - start_time)
 
         # cache the values
         last_lines = lines
@@ -224,3 +262,9 @@ def run():
         # change bit by bit
         if angle_changed:
             last_angle = angle
+
+        if buttons.b1.value() == False and buttons.b3.value() == False:
+            # wait for the buttons to be released so the chip doesn't immediately wake up
+            while buttons.b1.value() == False or buttons.b3.value() == False:
+                pass
+            deepsleep()

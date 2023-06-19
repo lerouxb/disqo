@@ -55,6 +55,7 @@ buttons = AttrDict(
 power_disable = Pin(PINS.POWER_DISABLE, Pin.OUT)
 power_disable.value(False) # enable power
 
+# TODO: It thinks USB is connected even when it isn't.
 usb_connected = Pin(PINS.USB_CONNECTED, Pin.IN, Pin.PULL_DOWN)
 
 # necessity of PULL kinda depends on how to deal with various High-Z states
